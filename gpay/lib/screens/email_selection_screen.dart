@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -5,7 +6,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:gpay/widgets/back_more_header.dart';
 import '../constants/app_colors.dart';
 import '../constants/app_logos.dart';
-import '../providers/email_provider.dart';
+import '../providers/auth_provider.dart';
 import '../providers/phone_provider.dart';
 
 final Terms =
@@ -23,6 +24,7 @@ class EmailSelectionScreen extends ConsumerStatefulWidget {
 
 class _EmailSelectionScreenState extends ConsumerState<EmailSelectionScreen> {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   Map<String, String>? _selectedAccount;
 
   @override
@@ -43,7 +45,6 @@ class _EmailSelectionScreenState extends ConsumerState<EmailSelectionScreen> {
           };
         });
       }
-
       print("Fetched Google account: $account");
     } catch (error) {
       print("Error fetching Google account: $error");
@@ -70,8 +71,38 @@ class _EmailSelectionScreenState extends ConsumerState<EmailSelectionScreen> {
 
   Future<void> _continueWithSelectedAccount() async {
     if (_selectedAccount != null) {
-      ref.read(emailProvider.notifier).state = _selectedAccount!;
-      // Perform any additional sign-in logic here if needed
+      try {
+        // Sign in with Google using Firebase Authentication
+        final GoogleSignInAuthentication googleAuth =
+            await _googleSignIn.currentUser!.authentication;
+        final AuthCredential credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth.accessToken,
+          idToken: googleAuth.idToken,
+        );
+
+        // Sign in to Firebase with the Google credentials
+        final UserCredential userCredential =
+            await _auth.signInWithCredential(credential);
+
+        // Update the auth provider with the signed-in user details
+        ref.read(authProvider.notifier).state = {
+          'email': userCredential.user!.email!,
+          'name': userCredential.user!.displayName ?? "Unknown User",
+          'imageUrl': userCredential.user!.photoURL ?? "",
+        };
+
+        if (!mounted) return;
+        // Navigate to the BankVerificationLoading page
+        Navigator.of(context).pushNamed('/bank-verification-loading');
+      } catch (error) {
+        debugPrint("Firebase Sign-In failed: $error");
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to sign in: $error'),
+          ),
+        );
+      }
     }
   }
 
@@ -199,8 +230,16 @@ class _EmailSelectionScreenState extends ConsumerState<EmailSelectionScreen> {
                             Size(MediaQuery.of(context).size.width * 0.9, 40),
                       ),
                       onPressed: () {
-                        _continueWithSelectedAccount();
-                        Navigator.of(context).pushNamed('/bank-verfication-loading');
+                        if (_selectedAccount != null) {
+                          _continueWithSelectedAccount();
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content:
+                                  Text('Please select an account to continue'),
+                            ),
+                          );
+                        }
                       },
                       child: const Text(
                         'Accept and continue',

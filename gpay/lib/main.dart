@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart'; // Add this import
 import 'package:gpay/constants/app_colors.dart';
 import 'package:gpay/screens/bank_verification_loading.dart';
 import 'package:gpay/screens/email_selection_screen.dart';
@@ -7,7 +8,10 @@ import 'package:gpay/screens/initial_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-void main() {
+void main() async {
+  // Ensure Firebase is initialized before running the app
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(); // Initialize Firebase
   runApp(const ProviderScope(child: MainApp()));
 }
 
@@ -23,9 +27,9 @@ class MainApp extends StatelessWidget {
         textTheme: GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme),
       ),
       initialRoute: '/',
-       onGenerateRoute: (settings) {
+      onGenerateRoute: (settings) {
         switch (settings.name) {
-          case '/bank-verfication-loading':
+          case '/bank-verification-loading':
             return _slideTransitionRoute(const BankVerificationLoading());
           case '/home-screen':
             return _slideTransitionRoute(const HomeScreen());
@@ -37,7 +41,6 @@ class MainApp extends StatelessWidget {
       },
     );
   }
-
 
   /// Function to create a slide transition
   PageRouteBuilder _slideTransitionRoute(Widget page) {
