@@ -200,7 +200,7 @@ class _EmailSelectionScreenState extends ConsumerState<EmailSelectionScreen> {
                       ),
                       onPressed: () {
                         _continueWithSelectedAccount();
-                        Navigator.of(context).pushNamed('/home-screen');
+                        Navigator.of(context).pushNamed('/bank-verfication-loading');
                       },
                       child: const Text(
                         'Accept and continue',

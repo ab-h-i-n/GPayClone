@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gpay/constants/app_colors.dart';
+import 'package:gpay/screens/bank_verification_loading.dart';
 import 'package:gpay/screens/email_selection_screen.dart';
 import 'package:gpay/screens/home_screen.dart';
 import 'package:gpay/screens/initial_screen.dart';
@@ -24,6 +25,8 @@ class MainApp extends StatelessWidget {
       initialRoute: '/',
        onGenerateRoute: (settings) {
         switch (settings.name) {
+          case '/bank-verfication-loading':
+            return _slideTransitionRoute(const BankVerificationLoading());
           case '/home-screen':
             return _slideTransitionRoute(const HomeScreen());
           case '/email-selection':
