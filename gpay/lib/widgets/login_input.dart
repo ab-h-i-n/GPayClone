@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import "package:google_fonts/google_fonts.dart";
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import "../constants/app_colors.dart";
 import "../constants/app_logos.dart";
 import '../providers/phone_provider.dart';
+
 
 class LoginInput extends ConsumerStatefulWidget {
   const LoginInput({super.key});
@@ -18,6 +20,7 @@ class _LoginInputState extends ConsumerState<LoginInput> {
   @override
   void initState() {
     super.initState();
+    _loadSavedPhoneNumber();
     phoneController.text = ref.read(phoneProvider);
     phoneController.addListener(_formatPhoneNumber);
   }
@@ -27,6 +30,15 @@ class _LoginInputState extends ConsumerState<LoginInput> {
     phoneController.removeListener(_formatPhoneNumber);
     phoneController.dispose();
     super.dispose();
+  }
+
+  Future<void> _loadSavedPhoneNumber() async {
+    final prefs = await SharedPreferences.getInstance();
+    final savedPhoneNumber = prefs.getString('phoneNumber') ?? '';
+    if (savedPhoneNumber.isNotEmpty) {
+      phoneController.text = savedPhoneNumber;
+      ref.read(phoneProvider.notifier).state = savedPhoneNumber;
+    }
   }
 
   void _formatPhoneNumber() {

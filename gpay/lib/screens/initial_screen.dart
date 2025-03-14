@@ -7,6 +7,7 @@ import 'package:gpay/widgets/login_input.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/phone_provider.dart';
 
+
 class InitialScreen extends ConsumerWidget {
   const InitialScreen({super.key});
 
@@ -14,8 +15,6 @@ class InitialScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     String phoneNumber = ref.watch(phoneProvider);
     bool isPhoneNumberValid = phoneNumber.length == 10;
-
-    print(phoneNumber);
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -46,8 +45,10 @@ class InitialScreen extends ConsumerWidget {
                           verticalPadding: 3,
                         ),
                         SizedBox(
-                          child:
-                              Icon(Icons.more_vert, color: AppColors.secondary),
+                          child: Icon(
+                            Icons.more_vert,
+                            color: AppColors.textColorMain,
+                          ),
                         ),
                       ],
                     ),
@@ -69,7 +70,7 @@ class InitialScreen extends ConsumerWidget {
                     'Enter your phone number',
                     style: GoogleFonts.inter(
                       color: AppColors.secondary,
-                      fontSize: 16,
+                      fontSize: 15,
                       fontWeight: FontWeight.normal,
                     ),
                   ),
@@ -93,7 +94,9 @@ class InitialScreen extends ConsumerWidget {
                         minimumSize:
                             Size(MediaQuery.of(context).size.width * 0.9, 40),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).pushNamed('/email-selection');
+                      },
                       child: const Text(
                         'Continue',
                         style: TextStyle(color: AppColors.primary),
