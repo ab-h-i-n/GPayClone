@@ -1,0 +1,2 @@
+/home/abhin/Documents/GPayClone/gpay/android/app/.cxx/Debug/1x6014l5/x86/CMakeFiles/edit_cache.dir
+/home/abhin/Documents/GPayClone/gpay/android/app/.cxx/Debug/1x6014l5/x86/CMakeFiles/rebuild_cache.dir

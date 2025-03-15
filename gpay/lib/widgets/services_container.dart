@@ -50,46 +50,43 @@ class ServicesContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(20),
-      child: GridView.builder(
-        shrinkWrap: true, // Take only the space it needs
-        physics:
-            const NeverScrollableScrollPhysics(), // Disable scrolling if inside another scrollable view
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 4, // 4 columns
-          mainAxisSpacing: 10,
-          crossAxisSpacing: 10,
-          childAspectRatio: 0.8, // Adjusts height to make it look good
-        ),
-        itemCount: services.length,
-        itemBuilder: (context, index) {
-          final service = services[index];
-          return GestureDetector(
-            onTap: () => print('Navigate to ${service['route']}'),
-            // Navigator.pushNamed(context, service['route'] as String),
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                Icon(
-                  service['icon'] as IconData,
-                  size: 30,
-                  color: AppColors.tertiary,
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  service['name'] as String,
-                  textAlign: TextAlign.center,
-                  style: GoogleFonts.inter(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.textColorMain),
-                ),
-              ],
-            ),
-          );
-        },
+    return GridView.builder(
+      shrinkWrap: true, // Take only the space it needs
+      physics:
+          const NeverScrollableScrollPhysics(), // Disable scrolling if inside another scrollable view
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 4, // 4 columns
+        mainAxisSpacing: 0,
+        crossAxisSpacing: 10,
+        childAspectRatio: 0.8, // Adjusts height to make it look good
       ),
+      itemCount: services.length,
+      itemBuilder: (context, index) {
+        final service = services[index];
+        return GestureDetector(
+          onTap: () => print('Navigate to ${service['route']}'),
+          // Navigator.pushNamed(context, service['route'] as String),
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+              Icon(
+                service['icon'] as IconData,
+                size: 30,
+                color: AppColors.tertiary,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                service['name'] as String,
+                textAlign: TextAlign.center,
+                style: GoogleFonts.inter(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                color: AppColors.textColorMain),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }
