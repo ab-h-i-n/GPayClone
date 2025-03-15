@@ -29,7 +29,7 @@ class _BankVerificationLoadingState
       });
       // Navigate to the home screen after a short delay
       Future.delayed(const Duration(milliseconds: 500), () {
-        Navigator.pushReplacementNamed(context, '/home-screen');
+        Navigator.pushNamedAndRemoveUntil(context, '/home-screen', (route) => false);
       });
     });
   }

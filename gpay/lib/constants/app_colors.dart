@@ -5,4 +5,5 @@ class AppColors {
   static const Color secondary = Color(0xFF7E817F);
   static const Color tertiary = Color(0xFFA8C7FA);
   static const Color textColorMain = Color(0xFFE3E3E3);
+  static const Color serachBarColor = Color(0xFF252529);
 }
