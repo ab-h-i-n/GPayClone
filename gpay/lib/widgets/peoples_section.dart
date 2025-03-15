@@ -12,13 +12,31 @@ class PeoplesSection extends StatefulWidget {
   State<PeoplesSection> createState() => _PeoplesSectionState();
 }
 
-class _PeoplesSectionState extends State<PeoplesSection> {
+class _PeoplesSectionState extends State<PeoplesSection>
+    with SingleTickerProviderStateMixin {
   List<Contact> userContacts = [];
+  late AnimationController _controller;
+  late Animation<double> _animation;
 
   @override
   void initState() {
     super.initState();
     _fetchUserContacts();
+
+    // Initialize the animation controller
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 800),
+    )..repeat(reverse: true); // Repeat the animation in a loop
+
+    // Define the animation (opacity)
+    _animation = Tween<double>(begin: 0.5, end: 1.0).animate(_controller);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose(); // Dispose the controller when not needed
+    super.dispose();
   }
 
   Future<void> _fetchUserContacts() async {
@@ -42,10 +60,33 @@ class _PeoplesSectionState extends State<PeoplesSection> {
         userContacts = contactsWithPhoto
           ..sort((a, b) => a.displayName.compareTo(b.displayName));
       });
-      print(userContacts);
     } else {
       debugPrint("Permission Denied!");
     }
+  }
+
+  Color generateRandomSimilarColor() {
+    // Base color in RGB (7E57C2)
+    const Color baseColor = Color(0xFF7E57C2);
+
+    // Convert base color to HSL
+    final HSLColor hslColor = HSLColor.fromColor(baseColor);
+
+    // Extract hue, saturation, and lightness
+    double saturation = hslColor.saturation;
+    double lightness = hslColor.lightness;
+
+    // Random generator
+    final Random random = Random();
+
+    // Generate a random hue (0-360 degrees)
+    double randomHue = random.nextDouble() * 360;
+
+    // Create a new color with the same saturation and lightness but a different hue
+    HSLColor newHslColor = HSLColor.fromAHSL(1.0, randomHue, saturation, lightness);
+
+    // Convert back to Color
+    return newHslColor.toColor();
   }
 
   @override
@@ -66,7 +107,51 @@ class _PeoplesSectionState extends State<PeoplesSection> {
           ),
           const SizedBox(height: 20),
           userContacts.isEmpty
-              ? const Center(child: CircularProgressIndicator())
+              ? SizedBox(
+                  height: 250,
+                  child: GridView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 4,
+                      childAspectRatio: 0.8,
+                    ),
+                    itemCount: 8,
+                    itemBuilder: (context, index) {
+                      return FadeTransition(
+                        opacity: _animation, 
+                        child: Column(
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: const Color.fromARGB(255, 48, 48, 52),
+                                  width: 1,
+                                ),
+                              ),
+                              child: CircleAvatar(
+                                radius: 30,
+                                backgroundColor: AppColors.serachBarColor,
+                                backgroundImage: null,
+                                child: null,
+                              ),
+                            ),
+                            const SizedBox(height: 5),
+                            Container(
+                              width: 60,
+                              height: 10,
+                              decoration: BoxDecoration(
+                                color: AppColors.serachBarColor,
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                )
               : SizedBox(
                   height: 250,
                   child: GridView.builder(
@@ -89,8 +174,7 @@ class _PeoplesSectionState extends State<PeoplesSection> {
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   border: Border.all(
-                                    color:
-                                        const Color.fromARGB(255, 48, 48, 52),
+                                    color: const Color.fromARGB(255, 48, 48, 52),
                                     width: 1,
                                   ),
                                 ),
@@ -170,30 +254,4 @@ class _PeoplesSectionState extends State<PeoplesSection> {
       ),
     );
   }
-}
-
-Color generateRandomSimilarColor() {
-  // Base color in RGB (7E57C2)
-  const Color baseColor = Color(0xFF7E57C2);
-
-  // Convert base color to HSL
-  final HSLColor hslColor = HSLColor.fromColor(baseColor);
-
-  // Extract hue, saturation, and lightness
-  double hue = hslColor.hue;
-  double saturation = hslColor.saturation;
-  double lightness = hslColor.lightness;
-
-  // Random generator
-  final Random random = Random();
-
-  // Generate a random hue (0-360 degrees)
-  double randomHue = random.nextDouble() * 360;
-
-  // Create a new color with the same saturation and lightness but a different hue
-  HSLColor newHslColor =
-      HSLColor.fromAHSL(1.0, randomHue, saturation, lightness);
-
-  // Convert back to Color
-  return newHslColor.toColor();
 }
