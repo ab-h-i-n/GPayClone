@@ -7,7 +7,7 @@ import '../constants/app_colors.dart';
 import '../constants/app_logos.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../widgets/tags_section.dart';
-
+import '../widgets/offers_rewards_section.dart';
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
@@ -97,6 +97,9 @@ class HomeScreen extends StatelessWidget {
 
                       // bills & recharges
                       BillsRechargesSection(),
+
+                      // offers & rewards
+                      OffersRewardsSection(),
                     ],
                   ),
                 )
