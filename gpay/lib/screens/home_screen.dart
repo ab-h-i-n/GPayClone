@@ -2,6 +2,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:gpay/widgets/peoples_section.dart';
 import 'package:gpay/widgets/services_container.dart';
+import 'package:gpay/widgets/bills_recharges_section.dart';
 import '../constants/app_colors.dart';
 import '../constants/app_logos.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -93,6 +94,9 @@ class HomeScreen extends StatelessWidget {
                       TagsSection(),
                       //peoples
                       PeoplesSection(),
+
+                      // bills & recharges
+                      BillsRechargesSection(),
                     ],
                   ),
                 )

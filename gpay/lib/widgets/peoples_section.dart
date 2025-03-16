@@ -108,7 +108,7 @@ class _PeoplesSectionState extends State<PeoplesSection>
           const SizedBox(height: 20),
           userContacts.isEmpty
               ? SizedBox(
-                  height: 250,
+                  height: 200,
                   child: GridView.builder(
                     physics: const NeverScrollableScrollPhysics(),
                     gridDelegate:
@@ -153,7 +153,7 @@ class _PeoplesSectionState extends State<PeoplesSection>
                   ),
                 )
               : SizedBox(
-                  height: 250,
+                  height: 200,
                   child: GridView.builder(
                     physics: const NeverScrollableScrollPhysics(),
                     gridDelegate:
