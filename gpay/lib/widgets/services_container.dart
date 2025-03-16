@@ -23,7 +23,7 @@ class ServicesContainer extends StatelessWidget {
     },
     {
       'name': 'Bank transfer',
-      'icon': Icons.account_balance,
+      'icon': Icons.account_balance_outlined,
       'route': '/bank-transfer',
     },
     {

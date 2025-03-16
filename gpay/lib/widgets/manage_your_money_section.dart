@@ -8,7 +8,7 @@ class ManageYourMoneySection extends StatelessWidget {
   final List<Map<String, dynamic>> manageMoneyItems = [
     {'icon': Icons.speed_outlined, 'title': 'Check your CIBIL score for free'},
     {'icon': Icons.history, 'title': 'See transaction history'},
-    {'icon': Icons.account_balance_sharp, 'title': 'Check bank balance'}
+    {'icon': Icons.account_balance_outlined, 'title': 'Check bank balance'}
   ];
 
   @override
