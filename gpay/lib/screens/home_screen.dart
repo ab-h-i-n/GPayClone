@@ -1,5 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
+import 'package:gpay/widgets/manage_your_money_section.dart';
 import 'package:gpay/widgets/peoples_section.dart';
 import 'package:gpay/widgets/services_container.dart';
 import 'package:gpay/widgets/bills_recharges_section.dart';
@@ -100,6 +101,9 @@ class HomeScreen extends StatelessWidget {
 
                       // offers & rewards
                       OffersRewardsSection(),
+
+                      //manage your money
+                      ManageYourMoneySection(),
                     ],
                   ),
                 )
