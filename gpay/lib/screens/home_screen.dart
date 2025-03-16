@@ -9,6 +9,8 @@ import '../constants/app_logos.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../widgets/tags_section.dart';
 import '../widgets/offers_rewards_section.dart';
+import '../widgets/invite_friends_section.dart';
+
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
@@ -74,7 +76,7 @@ class HomeScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-            
+
                       // banner
                       Image(
                         image: AssetImage(AppLogos.homeBanner),
@@ -83,7 +85,7 @@ class HomeScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-            
+
                 Padding(
                   padding: EdgeInsets.all(20),
                   child: Column(
@@ -106,7 +108,10 @@ class HomeScreen extends StatelessWidget {
                       ManageYourMoneySection(),
                     ],
                   ),
-                )
+                ),
+                
+                // invite friends
+                InviteFriendsSection(),
               ],
             ),
           ),

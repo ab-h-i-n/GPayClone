@@ -10,4 +10,5 @@ class AppLogos {
   static const String rewardsIcon = 'assets/images/rewards_icon.png';
   static const String referralsIcon = 'assets/images/referals_icon.png';
   static const String tezShotsIcon = 'assets/images/tez_shots_icon.png';
+  static const String inviteBanner = 'assets/images/invite_banner.png';
 }
