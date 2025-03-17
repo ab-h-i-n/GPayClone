@@ -1,4 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,6 +8,8 @@ import '../constants/app_colors.dart';
 import '../constants/app_logos.dart';
 import '../providers/auth_provider.dart';
 import '../providers/phone_provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import '../models/user.dart';
 
 final Terms =
     'By continuing you agree to the Combined Google Pay Terms.The Privacy Policy describes how your data is handled.Google Pay will periodically send your contacts and locationto Google servers. People with your number can contact you across Google services and see your public information, such as your name and photo.The phone number you have provided can be used on different Google services';
@@ -41,7 +43,7 @@ class _EmailSelectionScreenState extends ConsumerState<EmailSelectionScreen> {
           _selectedAccount = {
             'email': account.email,
             'name': account.displayName ?? "Unknown User",
-            'imageUrl': account.photoUrl ?? "",
+            'photoUrl': account.photoUrl ?? "",
           };
         });
       }
@@ -59,7 +61,7 @@ class _EmailSelectionScreenState extends ConsumerState<EmailSelectionScreen> {
           _selectedAccount = {
             'email': account.email,
             'name': account.displayName ?? "Unknown User",
-            'imageUrl': account.photoUrl ?? "",
+            'photoUrl': account.photoUrl ?? "",
           };
         });
       }
@@ -84,12 +86,13 @@ class _EmailSelectionScreenState extends ConsumerState<EmailSelectionScreen> {
         final UserCredential userCredential =
             await _auth.signInWithCredential(credential);
 
-        // Update the auth provider with the signed-in user details
-        ref.read(authProvider.notifier).state = {
+        //create a doc in firestore collection 'users'
+        FirebaseFirestore.instance.collection('users').doc(userCredential.user!.uid).set({
           'email': userCredential.user!.email!,
           'name': userCredential.user!.displayName ?? "Unknown User",
-          'imageUrl': userCredential.user!.photoURL ?? "",
-        };
+          'photoUrl': userCredential.user!.photoURL ?? "",
+          'phone' : ref.read(phoneProvider),
+        });
 
         if (!mounted) return;
         // Navigate to the BankVerificationLoading page
@@ -151,8 +154,8 @@ class _EmailSelectionScreenState extends ConsumerState<EmailSelectionScreen> {
                       CircleAvatar(
                         radius: 30,
                         backgroundImage: _selectedAccount != null &&
-                                _selectedAccount!['imageUrl']!.isNotEmpty
-                            ? NetworkImage(_selectedAccount!['imageUrl']!)
+                                _selectedAccount!['photoUrl']?.isNotEmpty == true
+                            ? NetworkImage(_selectedAccount!['photoUrl']!)
                             : AssetImage(AppLogos.noUser) as ImageProvider,
                       ),
                       const SizedBox(width: 20),

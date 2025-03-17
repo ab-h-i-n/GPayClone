@@ -1,23 +1,23 @@
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gpay/widgets/manage_your_money_section.dart';
 import 'package:gpay/widgets/peoples_section.dart';
 import 'package:gpay/widgets/services_container.dart';
 import 'package:gpay/widgets/bills_recharges_section.dart';
 import '../constants/app_colors.dart';
 import '../constants/app_logos.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import '../widgets/tags_section.dart';
 import '../widgets/offers_rewards_section.dart';
 import '../widgets/invite_friends_section.dart';
+import "../providers/auth_provider.dart";
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final user = FirebaseAuth.instance.currentUser;
-
+  Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(authProvider);
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, result) async {
@@ -50,7 +50,9 @@ class HomeScreen extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(50),
                                 ),
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 12),
+                                  horizontal: 10,
+                                  vertical: 12,
+                                ),
                                 child: Row(
                                   spacing: 10,
                                   children: [
@@ -67,11 +69,18 @@ class HomeScreen extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            CircleAvatar(
-                              radius: 18,
-                              backgroundImage: user?.photoURL != null
-                                  ? NetworkImage(user?.photoURL as String)
-                                  : AssetImage(AppLogos.noUser),
+                            InkWell(
+                              onTap: () {
+                                Navigator.pushNamed(context, '/profile');
+                              },
+                              child: CircleAvatar(
+                                radius: 18,
+                                backgroundImage: user?.photoUrl != null
+                                    ? NetworkImage(
+                                        user?.photoUrl as String,
+                                      )
+                                    : AssetImage(AppLogos.noUser),
+                              ),
                             )
                           ],
                         ),
@@ -109,7 +118,7 @@ class HomeScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                
+
                 // invite friends
                 InviteFriendsSection(),
               ],

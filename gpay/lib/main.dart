@@ -8,6 +8,7 @@ import 'package:gpay/screens/home_screen.dart';
 import 'package:gpay/screens/initial_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gpay/screens/user_profile.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,8 +28,7 @@ class MainApp extends StatelessWidget {
         scaffoldBackgroundColor: AppColors.primary,
         textTheme: GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme),
       ),
-      home : user == null ? const InitialScreen() : const HomeScreen(),
-      initialRoute: '/',
+      initialRoute: user != null ? '/home-screen' : '/',
       onGenerateRoute: (settings) {
         switch (settings.name) {
           case '/bank-verification-loading':
@@ -37,6 +37,8 @@ class MainApp extends StatelessWidget {
             return _slideTransitionRoute(const HomeScreen());
           case '/email-selection':
             return _slideTransitionRoute(const EmailSelectionScreen());
+          case '/profile':
+            return _slideTransitionRoute(const UserProfile());
           default:
             return _slideTransitionRoute(const InitialScreen());
         }
