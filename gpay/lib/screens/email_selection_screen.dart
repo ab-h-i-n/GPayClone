@@ -87,15 +87,20 @@ class _EmailSelectionScreenState extends ConsumerState<EmailSelectionScreen> {
             await _auth.signInWithCredential(credential);
 
         //create a doc in firestore collection 'users'
-        FirebaseFirestore.instance.collection('users').doc(userCredential.user!.uid).set({
-          'email': userCredential.user!.email!,
-          'name': userCredential.user!.displayName ?? "Unknown User",
-          'photoUrl': userCredential.user!.photoURL ?? "",
-          'phone' : ref.read(phoneProvider),
-        });
+        // Check if user exists
+        final userDoc = await FirebaseFirestore.instance.collection('users').doc(userCredential.user!.uid).get();
+        
+        if (!userDoc.exists) {
+          // Create new user document if it doesn't exist
+          await FirebaseFirestore.instance.collection('users').doc(userCredential.user!.uid).set({
+            'email': userCredential.user!.email!,
+            'name': userCredential.user!.displayName ?? "Unknown User",
+            'photoUrl': userCredential.user!.photoURL ?? "",
+            'phone': ref.read(phoneProvider),
+          });
+        }
 
         if (!mounted) return;
-        // Navigate to the BankVerificationLoading page
         Navigator.of(context).pushNamed('/bank-verification-loading');
       } catch (error) {
         debugPrint("Firebase Sign-In failed: $error");

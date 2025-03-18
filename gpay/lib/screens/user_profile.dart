@@ -4,7 +4,6 @@ import 'package:gpay/providers/auth_provider.dart';
 import 'package:gpay/widgets/back_more_header.dart';
 import "../constants/app_colors.dart";
 import "../constants/app_logos.dart";
-import 'package:firebase_auth/firebase_auth.dart';
 
 class UserProfile extends ConsumerWidget {
   const UserProfile({super.key});
@@ -39,7 +38,7 @@ class UserProfile extends ConsumerWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                user?.name as String,
+                                user?.name ?? "XXXXXXXXXX",
                                 style: TextStyle(
                                   color: AppColors.textColorMain,
                                   fontSize: 17,
@@ -47,14 +46,14 @@ class UserProfile extends ConsumerWidget {
                                 ),
                               ),
                               Text(
-                                'UPI ID : ${user?.email}',
+                                'UPI ID : ${user?.email ?? "XXXXXXXXXX"}',
                                 style: TextStyle(
                                   color: AppColors.textColorMain,
                                   fontSize: 14,
                                 ),
                               ),
                               Text(
-                                user?.phone as String,
+                                user?.phone ?? "XXXXXXXXXX",
                                 style: TextStyle(
                                   color: AppColors.textColorMain,
                                   fontSize: 14,
@@ -68,8 +67,9 @@ class UserProfile extends ConsumerWidget {
                       //signout button
                       ElevatedButton(
                         onPressed: () async {
-                          ref.read(authProvider.notifier).signOut();
                           Navigator.of(context).pushNamed('/');
+                          ref.read(authProvider.notifier).signOut();
+                          ref.invalidate(authProvider);
                         },
                         style: ElevatedButton.styleFrom(
                           padding: EdgeInsets.symmetric(

@@ -15,6 +15,7 @@ class AuthNotifier extends StateNotifier<User?> {
   }
 
   Future<void> _initializeUser() async {
+    print("initializing user!");
     final prefs = await SharedPreferences.getInstance();
     final String? cachedUser = prefs.getString('user');
     
