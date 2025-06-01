@@ -6,9 +6,21 @@ class ManageYourMoneySection extends StatelessWidget {
   ManageYourMoneySection({super.key});
 
   final List<Map<String, dynamic>> manageMoneyItems = [
-    {'icon': Icons.speed_outlined, 'title': 'Check your CIBIL score for free'},
-    {'icon': Icons.history, 'title': 'See transaction history'},
-    {'icon': Icons.account_balance_outlined, 'title': 'Check bank balance'}
+    {
+      'icon': Icons.speed_outlined, 
+      'title': 'Check your CIBIL score for free',
+      'route': '/check-cibil-score'
+    },
+    {
+      'icon': Icons.history, 
+      'title': 'See transaction history',
+      'route': '/transaction-history'
+    },
+    {
+      'icon': Icons.account_balance_outlined, 
+      'title': 'Check bank balance',
+      'route': '/check-bank-balance-loading'
+    }
   ];
 
   @override
@@ -30,7 +42,11 @@ class ManageYourMoneySection extends StatelessWidget {
           SizedBox(height: 16),
           ...manageMoneyItems.map(
             (e) => ElevatedButton(
-              onPressed: () => {},
+              onPressed: () {
+                if (e['route'] != null) {
+                  Navigator.pushNamed(context, e['route']);
+                }
+              },
               style: ElevatedButton.styleFrom(
                 elevation: 0,
                 backgroundColor: Colors.transparent,

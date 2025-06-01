@@ -3,11 +3,13 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart'; // Add this import
 import 'package:gpay/constants/app_colors.dart';
 import 'package:gpay/screens/bank_verification_loading.dart';
+import 'package:gpay/screens/check_bank_balance_loading.dart';
 import 'package:gpay/screens/email_selection_screen.dart';
 import 'package:gpay/screens/home_screen.dart';
 import 'package:gpay/screens/initial_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gpay/screens/upi_verification_screen.dart';
 import 'package:gpay/screens/user_profile.dart';
 
 void main() async {
@@ -31,6 +33,10 @@ class MainApp extends StatelessWidget {
       initialRoute: user != null ? '/home-screen' : '/',
       onGenerateRoute: (settings) {
         switch (settings.name) {
+          case '/check-bank-balance-upi':
+            return _slideTransitionRoute(const UPIVerificationScreen());
+          case '/check-bank-balance-loading':
+            return _slideTransitionRoute(const CheckBankBalanceLoading());
           case '/bank-verification-loading':
             return _slideTransitionRoute(const BankVerificationLoading());
           case '/home-screen':
@@ -53,7 +59,8 @@ class MainApp extends StatelessWidget {
         const begin = Offset(1.0, 0.0);
         const end = Offset.zero;
         const curve = Curves.easeInOut;
-        final tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+        final tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
         return SlideTransition(position: animation.drive(tween), child: child);
       },
     );
