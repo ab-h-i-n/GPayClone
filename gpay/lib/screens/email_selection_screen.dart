@@ -6,14 +6,12 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:gpay/widgets/back_more_header.dart';
 import '../constants/app_colors.dart';
 import '../constants/app_logos.dart';
-import '../providers/auth_provider.dart';
 import '../providers/phone_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../models/user.dart';
 
-final Terms =
+final terms =
     'By continuing you agree to the Combined Google Pay Terms.The Privacy Policy describes how your data is handled.Google Pay will periodically send your contacts and locationto Google servers. People with your number can contact you across Google services and see your public information, such as your name and photo.The phone number you have provided can be used on different Google services';
-final Privacy =
+final privacy =
     'Google Pay collects your phone number device, payment and location, to set up payment methods and control risk. This and other transaction information may be shared with your payment provider network and 3rd parties.';
 
 class EmailSelectionScreen extends ConsumerStatefulWidget {
@@ -216,7 +214,7 @@ class _EmailSelectionScreenState extends ConsumerState<EmailSelectionScreen> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Text(
-                      Terms,
+                      terms,
                       textAlign: TextAlign.center,
                       style: GoogleFonts.inter(
                         color: AppColors.secondary,
@@ -224,7 +222,7 @@ class _EmailSelectionScreenState extends ConsumerState<EmailSelectionScreen> {
                       ),
                     ),
                     Text(
-                      Privacy,
+                      privacy,
                       textAlign: TextAlign.center,
                       style: GoogleFonts.inter(
                         color: AppColors.secondary,
