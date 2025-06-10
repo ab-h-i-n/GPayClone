@@ -76,7 +76,8 @@ class UPIVerificationScreen extends StatelessWidget {
                   LineStylePinInput(
                     onPinCompleted: (pin) {
                       debugPrint("Entered PIN: $pin");
-                      // Handle PIN verification here
+                      // Navigate to bank balance screen
+                      Navigator.pushReplacementNamed(context, '/bank-balance');
                     },
                   ),
                 ],

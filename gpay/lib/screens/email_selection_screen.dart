@@ -95,7 +95,16 @@ class _EmailSelectionScreenState extends ConsumerState<EmailSelectionScreen> {
             'name': userCredential.user!.displayName ?? "Unknown User",
             'photoUrl': userCredential.user!.photoURL ?? "",
             'phone': ref.read(phoneProvider),
+            'amount': 50000,
           });
+        } else {
+          // Check if amount field exists, if not add it
+          final data = userDoc.data()!;
+          if (!data.containsKey('amount')) {
+            await FirebaseFirestore.instance.collection('users').doc(userCredential.user!.uid).update({
+              'amount': 50000,
+            });
+          }
         }
 
         if (!mounted) return;

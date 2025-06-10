@@ -11,6 +11,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gpay/screens/upi_verification_screen.dart';
 import 'package:gpay/screens/user_profile.dart';
+import 'package:gpay/screens/bank_balance_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -45,6 +46,8 @@ class MainApp extends StatelessWidget {
             return _slideTransitionRoute(const EmailSelectionScreen());
           case '/profile':
             return _slideTransitionRoute(const UserProfile());
+          case '/bank-balance':
+            return _slideTransitionRoute(const BankBalanceScreen());
           default:
             return _slideTransitionRoute(const InitialScreen());
         }
